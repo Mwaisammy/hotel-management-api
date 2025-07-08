@@ -1,0 +1,22 @@
+#Test the base URL
+GET http://localhost:8081
+
+###Create a user
+
+POST http://localhost:8081/auth/register
+Content-Type: application/json
+
+{
+        "firstname": "Sam",
+        "lastname": "Mwai",
+        "email": "sam@gmail.com",
+        "password": "password456",
+        "contactPhone": "0700222333",
+        "address": "Mombasa, Kenya",
+        "role": "user"
+
+}
+### Get users
+
+
+
