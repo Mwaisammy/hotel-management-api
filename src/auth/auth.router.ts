@@ -1,7 +1,6 @@
 //Routing
-
 import { Express } from "express";
-import { createUserController } from "./auth.controller";
+import { createUserController, loginUserController } from "./auth.controller";
 
 
 const auth = (app:Express) => {
@@ -14,6 +13,17 @@ const auth = (app:Express) => {
             } catch (error) {
                 next(error)
                 
+            }
+        }
+    )
+
+    app.route("/auth/login").post(
+        async(req, res, next) => {
+            try {
+                await loginUserController(req, res)
+                
+            } catch (error) {
+               next(error) 
             }
         }
     )

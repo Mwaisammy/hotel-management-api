@@ -10,11 +10,12 @@
     "forceConsistentCasingInFileNames": true, 
     /* Type Checking */
     "strict": true,
-    "skipLibCheck": true 
+    "skipLibCheck": true,
+    "isolatedModules": true
   },
   "include": [
     "src/**/*"   
-  ],
+, "src/BasicUtils.ts"  ],
   "exclude": [
     "node_modules",
     "**/*.spec.ts"

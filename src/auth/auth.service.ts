@@ -8,7 +8,7 @@ export const createUserService = async (user: TIUSer) => {
     await db.insert(UsersTable).values(user)
     return "User created successfully"
 }
-
+ 
 //Login user
 
 export const userLoginService = async(user: TIUSer) => {
@@ -21,7 +21,8 @@ export const userLoginService = async(user: TIUSer) => {
             firstname: true,
             lastname: true,
             email: true,
-            password: true
+            password: true,
+            role: true
         }, where: sql`${UsersTable.email} = ${email}`
     })
     

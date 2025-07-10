@@ -40,5 +40,5 @@ export const updateSupportTicketService = async (id: number, supportTicket: TSSu
 // delete SupportTicket by id
 export const deleteSupportTicketService = async (id: number) => {
     await db.delete(SupportTicketsTable).where(eq(SupportTicketsTable.ticketId, id))
-    return "Support  deleted successfully";
+    return "Support deleted successfully";
 }

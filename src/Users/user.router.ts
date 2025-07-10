@@ -2,7 +2,9 @@ import { Express } from 'express'
 import { deleteUserController, getAllUsersController, getUserByIdController, updateUserController } from './user.controller'
 
 export const users = (app: Express) => {
+
     app.route("/users").get(
+
         async( req, res, next) => {
             try {
                 await getAllUsersController(req, res)
