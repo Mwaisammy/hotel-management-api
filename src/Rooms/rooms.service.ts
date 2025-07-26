@@ -1,6 +1,7 @@
 import { eq, sql } from "drizzle-orm"
 import db from "../Drizzle/db"
 import { TIRooms, RoomsTable } from "../Drizzle/schema"
+import { truncate } from "fs/promises"
 
 
 export const createRoomService = async(room:TIRooms) => {
@@ -13,7 +14,20 @@ export const createRoomService = async(room:TIRooms) => {
 
 
 export const getAllRoomsService = async() => {
-    const rooms = await db.query.RoomsTable.findMany()
+    const rooms = await db.query.RoomsTable.findMany({
+        columns: {
+             roomId: true,
+    hotelId: true,
+    roomType: true,
+    pricePerNight: true,
+    capacity: true,
+    amenities: true,
+    isAvailable: true
+
+        
+    }
+}
+)
     return rooms
     
     

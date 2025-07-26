@@ -1,5 +1,5 @@
 import db from "../../src/Drizzle/db"
-import {  deleteUserService, getAllUsersService, getUserByIdService, updateUserService } from "../../src/users/user.service"
+import {  deleteUserService, getAllUsersService, getUserByIdService, updateUserService } from "../../src/Users/user.service"
 import {  UsersTable,  } from "../../src/Drizzle/schema"
 
 jest.mock("../../src/Drizzle/db", () => ({

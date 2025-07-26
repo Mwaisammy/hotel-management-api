@@ -9,9 +9,6 @@ import {
   pgEnum,
   text,
   decimal,
-  // primaryKey,
-  // unique,
-  // foreignKey,
 } from "drizzle-orm/pg-core";
 
 // ENUMS
@@ -25,13 +22,14 @@ export const UsersTable = pgTable("users", {
   userId: serial("user_id").primaryKey(),
   firstname: varchar("firstname", { length: 100 }),
   lastname: varchar("lastname", { length: 100 }),
-  email: varchar("email", { length: 150 }).unique(),
+  email: varchar("email", { length: 150 }).unique().notNull(),
   password: varchar("password", { length: 255 }),
   contactPhone: varchar("contact_phone", { length: 20 }),
   address: text("address"),
-  role: userRoleEnum("role").default("user"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow()
+  role: userRoleEnum("role").default("user"), 
+  isVerified: boolean("is_verified").default(false),
+  verificationCode: varchar("verification_code", { length: 255 }),
+  
 });
 
 // HOTELS
@@ -43,21 +41,24 @@ export const HotelsTable = pgTable("hotels", {
   contactPhone: varchar("contact_phone", { length: 20 }),
   category: varchar("category", { length: 100 }),
   rating: decimal("rating", { precision: 2, scale: 1 }),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow()
+  price: decimal("price", { precision: 10, scale: 2 }),  // New field
+  amenities: text("amenities"),                          // New field
+  description: text("description"),                      // New field
 });
+
 
 // ROOMS
 export const RoomsTable = pgTable("rooms", {
   roomId: serial("room_id").primaryKey(),
   hotelId: integer("hotel_id").references(() => HotelsTable.hotelId, { onDelete: "cascade" }).notNull(),
+  roomName: varchar("room_name", { length: 150 }),        // New field
   roomType: varchar("room_type", { length: 100 }),
   pricePerNight: decimal("price_per_night", { precision: 10, scale: 2 }),
   capacity: integer("capacity"),
   amenities: text("amenities"),
   isAvailable: boolean("is_available").default(true),
-  createdAt: timestamp("created_at").defaultNow()
 });
+
 
 // BOOKINGS
 export const BookingsTable = pgTable("bookings", {
@@ -68,8 +69,7 @@ export const BookingsTable = pgTable("bookings", {
   checkOutDate: timestamp("check_out_date").notNull(),
   totalAmount: decimal("total_amount", { precision: 10, scale: 2 }),
   bookingStatus: bookingStatusEnum("booking_status").default("Pending"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow()
+  
 });
 
 // PAYMENTS
@@ -81,8 +81,7 @@ export const PaymentsTable = pgTable("payments", {
   paymentDate: timestamp("payment_date").defaultNow(),
   paymentMethod: varchar("payment_method", { length: 50 }),
   transactionId: varchar("transaction_id", { length: 100 }),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow()
+  
 });
 
 // CUSTOMER SUPPORT TICKETS

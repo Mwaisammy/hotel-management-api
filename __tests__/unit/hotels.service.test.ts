@@ -1,5 +1,5 @@
 import db from "../../src/Drizzle/db"
-import { createHotelService, deleteHotelservice, getAllHotelsService, getHotelsByIdService, updateHotelservice } from "../../src/hotels/hotels.service"
+import { createHotelService, deleteHotelservice, getAllHotelsService, getHotelsByIdService, updateHotelservice } from "../../src/Hotels/hotels.service"
 import {  HotelsTable,  } from "../../src/Drizzle/schema"
 
 jest.mock("../../src/Drizzle/db", () => ({
@@ -14,6 +14,7 @@ jest.mock("../../src/Drizzle/db", () => ({
         }
     }
 }))
+
 
 
 beforeEach(() => {
@@ -113,9 +114,6 @@ describe("hotel service", () =>{
             expect(db.query.HotelsTable.findMany).toHaveBeenCalled()
           })
 
-
-            
-        
     })
 
 

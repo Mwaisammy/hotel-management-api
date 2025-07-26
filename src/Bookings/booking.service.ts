@@ -15,8 +15,21 @@ export const createBookingService = async(bookings: TIBooking) => {
 
 
 export const getAllBookingsService = async() => {
-    const bookings = await db.query.BookingsTable.findMany()
-    return bookings
+    const bookings = await db.query.BookingsTable.findMany({
+        columns:{
+            bookingId: true,
+            userId: true,
+            roomId: true,
+            checkInDate: true,
+            checkOutDate: true,
+            totalAmount: true,
+            bookingStatus: true
+
+        }
+      
+    })
+      return bookings
+  
     
     
 }
@@ -32,7 +45,7 @@ export const getBookingByIdService = async (id: number) => {
 
 // update Booking by id
 export const updateBookingService = async (id: number, booking: TIBooking) => {
-    await db.update(BookingsTable).set(booking).where(eq(BookingsTable.bookingId, id))
+    await db.update(BookingsTable).set(booking).where(eq(BookingsTable.bookingId, id)).returning();
     return "Booking updated successfully";
 }
 

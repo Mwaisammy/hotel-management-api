@@ -3,23 +3,29 @@ import { createTicketService, deleteSupportTicketService, getAllSupportTicketsSe
  
 
 export const createTicketController = async(req: Request, res:Response) => {
-
   try {
-    const ticket = req.body
+    const {subject,description,userId,status} = req.body
+    if (!subject || !description || !userId || !status) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    const newTicket = req.body
 
-    const createdTicket = await createTicketService(ticket)
-    if(!createdTicket) return res.json({message: "Ticket not created"})
-      return res.status(201).json({message: "Ticket was created successfully"})
+    const createdTicket = await createTicketService(newTicket)
+    if (!createdTicket) {
+      return res.status(400).json({ message: "Ticket not created" });
+    }
+
+    return res.status(201).json({ message: createdTicket });
     
-
-    
-  } catch (error: any) {
-                return res.status(500).json({ error: error.message });
-
+  
+  } catch (error) {
+    console.error('Error creating ticket:', error);
+    return res.status(500).json({ message:"server issue" });
     
   }
-}
+  
 
+}
 export const getAllSupportTicketsController = async(req: Request, res:Response) => {
     try {
         const supportTickets = await getAllSupportTicketsService()

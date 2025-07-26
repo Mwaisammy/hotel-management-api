@@ -1,5 +1,5 @@
 import db from "../../src/Drizzle/db"
-import { createRoomService, deleteRoomService, getAllRoomsService, getRoomByIdService, updateRoomService } from "../../src/Rooms/Rooms.service"
+import { createRoomService, deleteRoomService, getAllRoomsService, getRoomByIdService, updateRoomService } from "../../src/Rooms/rooms.service"
 import {  RoomsTable,  } from "../../src/Drizzle/schema"
 
 jest.mock("../../src/Drizzle/db", () => ({
@@ -56,8 +56,8 @@ describe("Room service", () =>{
             })
     
     
-            const room = {
-           roomId: 1,
+        const room = {
+            roomId: 1,
             hotelId: 2,
             roomType: "Forest cabin",
             pricePerNight: "40000.00",

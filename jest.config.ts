@@ -4,8 +4,14 @@ const config: Config = {
   preset: "ts-jest",
   testEnvironment: "node",
   verbose: true,
-  // collectCoverage: true,
-  // collectDirectory: 'coverage',
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageProvider: "v8",
+  testMatch: [
+    "**/__tests__/**"
+  ],
+
+  testTimeout: 500000,
   
 };
 

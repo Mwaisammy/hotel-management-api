@@ -44,7 +44,7 @@ describe("Payment service", () =>{
     
             const result = await createPaymentService(payment)
             expect(db.insert).toHaveBeenCalledWith(PaymentsTable)
-            expect(result).toEqual("Payment was created")
+            expect(result).toEqual("Payment created successfully")
     
         })
     

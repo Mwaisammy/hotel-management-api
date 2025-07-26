@@ -6,29 +6,38 @@ import payment from './Payments/payments.router';
 import hotel from './Hotels/hotels.router';
 import room from './Rooms/rooms.router';
 import ticket from './SupportTickets/supportTickets.router';
+import cors from 'cors'
 
 
-const app = express()
-const port  = 8081
+const initializeApp = () => {
+    const app = express()
+     app.use(cors({
+        origin: 'http://localhost:5173',
+        methods: ["GET","POST","PUT","DELETE"]
 
-app.use(express.json());
+    }))
+   
+    
+    app.use(express.json());
+    
+    
+    // routes
+    auth(app)
+    users(app)
+    booking(app)
+    payment(app)
+    hotel(app)
+    room(app)
+    ticket(app)
+    
+    
+    app.get('/', (req, res) => {
+        res.send('Hello world')
+    })
 
+    return app
+    
+}
 
-// routes
-auth(app)
-users(app)
-booking(app)
-payment(app)
-hotel(app)
-room(app)
-ticket(app)
-
-
-app.get('/', (req, res) => {
-    res.send('Hello world')
-})
-
-
-app.listen(port, () => {
-    console.log(`Listening on port ${port}`)
-})
+const app = initializeApp()
+export default app

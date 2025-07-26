@@ -1,8 +1,16 @@
-import { createUserService, userLoginService } from "./auth.service";
+import { createUserService, userLoginService, verifyUserService } from "./auth.service";
 import { Request, Response } from "express";
 import bycrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import "dotenv/config"
+import { sendMail } from "../mailer/mailer";
+import { getUserByEmailService } from "../Users/user.service";
+import { TIUSer } from "../Drizzle/schema";
+
+
+type user = {
+    user: TIUSer
+}
 
 //create a user controller
 
@@ -16,9 +24,37 @@ export const createUserController = async(req: Request, res: Response) => {
         user.password = hashedPassword 
 
 
+        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
+        user.verificationCode = verificationCode
+        user.isVerified = false
+
+
         const createUser = await createUserService(user)
         if(!createUser) return res.json({message: "User not created"})
-            return res.status(201).json({message: "User created successfully"})
+           
+
+        try {
+
+            await sendMail(
+                user.email,
+                "Verify your account",
+                `Hello ${user.firstname}, your verification code is: ${verificationCode}`,
+                `<div>
+                <h1>Hello ${user.lastname},</h1>
+                <p>your verification code is: ${verificationCode}</p>
+                </div>`
+
+            )
+            
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({message: "Error sending email"})
+            
+        }
+
+
+         return res.status(201).json({message: "User created successfully"})
+
 
 
         
@@ -78,7 +114,8 @@ export const loginUserController = async(req: Request, res: Response) => {
             user_id: userExist.userId,
             first_name: userExist.firstname,
             last_name: userExist.lastname,
-            email: userExist.email
+            email: userExist.email,
+            role: userExist.role
         }
 
     })
@@ -94,4 +131,71 @@ export const loginUserController = async(req: Request, res: Response) => {
      
 }
 
+
+
+export const verifyUserController = async (req: Request, res: Response) => {
+    const { email, verificationCode } = req.body; 
+
+
+    if (!email || !verificationCode) {
+        return res.status(400).json({ message: "Email and verification code are required to verify your account." });
+    }
+
+    try {
+        
+        const user = await getUserByEmailService(email);
+
+        // If no user found with the given email
+        if (!user) {
+            return res.status(404).json({ message: "User not found with the provided email address." });
+        }
+
+        // Check if the account is already verified to prevent redundant operations
+        if (user.isVerified) {
+            return res.status(400).json({ message: "Account is already verified." });
+        }
+
+        
+   
+
+        if (String(user.verificationCode).trim() === String(verificationCode).trim()) {
+           
+            await verifyUserService(email);
+
+            try {
+                await sendMail(
+                    user.email,
+                    "Account Verification Successful - Welcome!",
+                    `Hello ${user.lastname},\n\nYour account has been successfully verified!\n\nYou can now log in and enjoy our services.\n\nThank you for choosing us!`, 
+                    `<div>
+                        <h2>Hello ${user.lastname},</h2>
+                        <p>Your account has been successfully verified!</p>
+                        <p>You can now log in and enjoy our services.</p>
+                        <p>Thank you for choosing us!</p>
+                    </div>` 
+                );
+               
+            } catch (emailError: any) {
+                
+                
+                return res.status(200).json({
+                    message: "Account verified successfully, but there was an issue sending the confirmation email.",
+                    emailError: emailError.message // Optionally include error details
+                });
+            }
+
+            // Respond with success message
+            return res.status(200).json({ message: "Account verified successfully!" });
+
+        } else {
+            
+           
+            return res.status(400).json({ message: "Invalid verification code provided." });
+        }
+
+    } catch (error: any) {
+        console.error("Error in verifyUserController:", error);
+        return res.status(500).json({ error: error.message || "Internal server error during account verification." });
+    }
+};
 

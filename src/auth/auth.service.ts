@@ -27,3 +27,14 @@ export const userLoginService = async(user: TIUSer) => {
     })
     
 }
+
+
+//get user by email
+export const verifyUserService = async(email: string) => {
+    await db.update(UsersTable)
+    .set({isVerified: true, verificationCode: null})
+    .where(sql`${UsersTable.email} = ${email}`)
+    .execute();
+    return "User verified successfully"
+
+}

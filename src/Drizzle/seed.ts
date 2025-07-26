@@ -65,92 +65,114 @@ async function seedDatabase() {
     ]);
 
     // HOTELS
-    await db.insert(HotelsTable).values([
-      {
-        name: "Safari Lodge",
-        location: "Nairobi",
-        address: "123 Safari St",
-        contactPhone: "0790111222",
-        category: "Luxury",
-        rating: "4.5"
-      },
-      {
-        name: "Seaview Resort",
-        location: "Mombasa",
-        address: "Beach Road",
-        contactPhone: "0790222333",
-        category: "Resort",
-        rating: "4.0"
-      },
-      {
-        name: "Green Hills Hotel",
-        location: "Nyeri",
-        address: "Forest Lane",
-        contactPhone: "0790333444",
-        category: "Budget",
-        rating: "3.8"
-      },
-      {
-        name: "Lake View Retreat",
-        location: "Naivasha",
-        address: "Lake Road",
-        contactPhone: "0790444555",
-        category: "Nature",
-        rating: "4.3"
-      },
-      {
-        name: "Urban Stay",
-        location: "Kisumu",
-        address: "City Center",
-        contactPhone: "0790555666",
-        category: "Business",
-        rating: "4.1"
-      }
-    ]);
+   // HOTELS
+await db.insert(HotelsTable).values([
+  {
+    name: "Safari Lodge",
+    location: "Nairobi",
+    address: "123 Safari St",
+    contactPhone: "0790111222",
+    category: "Luxury",
+    rating: "4.5",
+    price: "15000",
+    amenities: "Pool, Spa, WiFi, Restaurant",
+    description: "Experience the wild in style at Safari Lodge, a luxury hotel in the heart of Nairobi."
+  },
+  {
+    name: "Seaview Resort",
+    location: "Mombasa",
+    address: "Beach Road",
+    contactPhone: "0790222333",
+    category: "Resort",
+    rating: "4.0",
+    price: "18000",
+    amenities: "Beach Access, Pool, Bar, Free Breakfast",
+    description: "Enjoy the serene ocean view and relaxing beach vibes at Seaview Resort."
+  },
+  {
+    name: "Green Hills Hotel",
+    location: "Nyeri",
+    address: "Forest Lane",
+    contactPhone: "0790333444",
+    category: "Budget",
+    rating: "3.8",
+    price: "5000",
+    amenities: "WiFi, Parking",
+    description: "Affordable comfort in Nyeri surrounded by scenic hills and quiet nature."
+  },
+  {
+    name: "Lake View Retreat",
+    location: "Naivasha",
+    address: "Lake Road",
+    contactPhone: "0790444555",
+    category: "Nature",
+    rating: "4.3",
+    price: "12000",
+    amenities: "Lake View, Nature Trails, Fireplace",
+    description: "Reconnect with nature at Lake View Retreat, your peaceful escape by the lake."
+  },
+  {
+    name: "Urban Stay",
+    location: "Kisumu",
+    address: "City Center",
+    contactPhone: "0790555666",
+    category: "Business",
+    rating: "4.1",
+    price: "10000",
+    amenities: "Conference Rooms, High-Speed WiFi, Airport Shuttle",
+    description: "Modern business accommodation at the heart of Kisumu."
+  }
+]);
 
-    // RoomsTable
-    await db.insert(RoomsTable).values([
-      {
-        hotelId: 1,
-        roomType: "Deluxe Suite",
-        pricePerNight: "15000",
-        capacity: 2,
-        amenities: "WiFi, AC, TV, Mini Bar",
-        isAvailable: true
-      },
-      {
-        hotelId: 1,
-        roomType: "Standard Room",
-        pricePerNight: "10000",
-        capacity: 2,
-        amenities: "WiFi, TV",
-        isAvailable: true
-      },
-      {
-        hotelId: 2,
-        roomType: "Beachfront Room",
-        pricePerNight: "18000",
-        capacity: 3,
-        amenities: "WiFi, Sea View, AC",
-        isAvailable: true
-      },
-      {
-        hotelId: 3,
-        roomType: "Budget Twin",
-        pricePerNight: "5000",
-        capacity: 2,
-        amenities: "Fan, Shared Bathroom",
-        isAvailable: true
-      },
-      {
-        hotelId: 4,
-        roomType: "Nature Cabin",
-        pricePerNight: "12000",
-        capacity: 4,
-        amenities: "Balcony, Fireplace, WiFi",
-        isAvailable: true
-      }
-    ]);
+// ROOMS
+await db.insert(RoomsTable).values([
+  {
+    hotelId: 1,
+    roomName: "Deluxe Safari Suite",
+    roomType: "Deluxe Suite",
+    pricePerNight: "15000",
+    capacity: 2,
+    amenities: "WiFi, AC, TV, Mini Bar",
+    isAvailable: true
+  },
+  {
+    hotelId: 1,
+    roomName: "Standard Safari Room",
+    roomType: "Standard Room",
+    pricePerNight: "10000",
+    capacity: 2,
+    amenities: "WiFi, TV",
+    isAvailable: true
+  },
+  {
+    hotelId: 2,
+    roomName: "Ocean View Room",
+    roomType: "Beachfront Room",
+    pricePerNight: "18000",
+    capacity: 3,
+    amenities: "WiFi, Sea View, AC",
+    isAvailable: true
+  },
+  {
+    hotelId: 3,
+    roomName: "Budget Twin",
+    roomType: "Budget Twin",
+    pricePerNight: "5000",
+    capacity: 2,
+    amenities: "Fan, Shared Bathroom",
+    isAvailable: true
+  },
+  {
+    hotelId: 4,
+    roomName: "Forest Cabin",
+    roomType: "Nature Cabin",
+    pricePerNight: "12000",
+    capacity: 4,
+    amenities: "Balcony, Fireplace, WiFi",
+    isAvailable: true
+  }
+]);
+
 
     // BookingsTable
        await db.insert(BookingsTable).values([

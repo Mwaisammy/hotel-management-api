@@ -30,7 +30,7 @@ export const getAllBookingsController = async(req: Request, res:Response) => {
     try {
         const Bookings = await getAllBookingsService()
         if(!Bookings) return res.json({message: "No Bookings found"})
-        return res.status(200).json({message: Bookings})
+        return res.status(200).json({message:"bookings fetched succesfully",Bookings})
 
         
     } catch (error :any) {

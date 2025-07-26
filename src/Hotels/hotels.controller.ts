@@ -2,17 +2,34 @@ import { Request, Response } from 'express';
 import { createHotelService, deleteHotelservice, getAllHotelsService, getHotelsByIdService, updateHotelservice } from "./hotels.service"
 
 
-export const createHotelController = async(req: Request, res:Response) => {
-  const hotel = req.body
+export const createHotelController = async (req: Request, res: Response) => {
+  const hotel = req.body;
 
-    if(hotel.checkInDate || hotel.checkOutDate || hotel.createdAt || hotel.updatedAt ){
-      hotel.checkInDate = new Date(hotel.checkInDate)
-      hotel.checkOutDate = new Date(hotel.checkOutDate)
-     
-    }
-    const createdHotel = await createHotelService(hotel)
-    if(!createdHotel) return res.json({message: "Hotel not created"})
-    return res.status(201).json({message:createdHotel})}
+  // Validate required fields
+  // if (!hotel.name || !hotel.location || !hotel.price) {
+  //   return res.status(400).json({ message: "Missing required hotel fields" });
+  // }
+
+  if(!hotel) {
+    return res.status(400).json({message: "Hotel not created"})
+  }
+
+  
+
+  const createdHotel = await createHotelService(hotel);
+  // missing fields
+  if (createdHotel === null) {
+    return res.status(400).json({ message: "Missing required hotel fields" });
+  }
+  
+
+  if (!createdHotel) {
+    return res.status(400).json({ message: "Hotel not created" });
+  }
+
+  return res.status(201).json({ message: createdHotel });
+};
+
  
 
 export const getAllHotelsController = async(req: Request, res:Response) => {
@@ -61,7 +78,7 @@ export const updateHotelController = async (req: Request, res: Response) => {
 
 
     const updatedHotel = await updateHotelservice(id, hotelData);
-     if (!updatedHotel) {
+     if (!updatedHotel) {                                     
             return res.status(400).json({ message: "Hotels not updated" });
         }
     return res.status(200).json({ message: "Hotels updated successfully" });

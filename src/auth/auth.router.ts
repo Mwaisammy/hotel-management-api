@@ -1,6 +1,6 @@
 //Routing
 import { Express } from "express";
-import { createUserController, loginUserController } from "./auth.controller";
+import { createUserController, loginUserController, verifyUserController } from "./auth.controller";
 
 
 const auth = (app:Express) => {
@@ -24,6 +24,19 @@ const auth = (app:Express) => {
                 
             } catch (error) {
                next(error) 
+            }
+        }
+    )
+
+    app.route("/auth/verify").post(
+        async(req, res, next) => {
+            try {
+
+                await verifyUserController(req, res)
+                
+            } catch (error) {
+                next(error)
+                
             }
         }
     )
